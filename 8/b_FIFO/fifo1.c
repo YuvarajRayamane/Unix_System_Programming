@@ -5,7 +5,6 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <unistd.h>
-
 #define STRING_SIZE 512
 
 int main() {
@@ -31,6 +30,5 @@ int main() {
         printf("Process 2: %s\n", arr1);
         close(fd);
     }
-
     return 0;
 }
