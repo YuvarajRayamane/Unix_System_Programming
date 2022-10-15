@@ -24,3 +24,15 @@ else
 echo -e "\n$1 Invalid file."
 
 fi
+
+
+#space sensitive
+#chmod u+x 1.sh
+#./1.sh
+#./1.sh 1.sh   (Regular file)
+#./1.sh /dev  ==(directory file)
+#./1.sh /dev/null  ==(Character device file)
+#./1.sh /dev/stderr  ==(Character device file)
+#./1.sh /dev/loop1  ==(Block device file)
+# ln -s file.txt file_name.txt  (creates symbolic link)
+#./1.sh file_name.txt  ==(Symbolic link file)
