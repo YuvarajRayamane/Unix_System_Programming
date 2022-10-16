@@ -1,32 +1,33 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <setjmp.h>
 
-void func1(jmp_buf buf);
-void func2(jmp_buf buf);
+jmp_buf buf1,buf2;
 
-int main() {
-    printf("Entered the main function\n");
-    jmp_buf buffer;
-    int res = setjmp(buffer);
+void jumpfunc2(){
+    printf("In jumpfunc2\n");
+    longjmp(buf2,3);
+}
 
-    if (res == 1) {
-        printf("Calling user defined function 2 from main\n");
-        func2(buffer);
-    } else if (res == 2) {
-        printf("Now res is 2\n");
-    } else {
-        printf("Calling user defined function 1 from main\n");
-        func1(buffer);
+void jumpfunc1(){
+    printf("In jumpfunc1\n");
+    int val=setjmp(buf2);
+    if(val==3){
+        printf("Return from jumpfunc2 to jumpfunc1\n");
+        longjmp(buf1,1);
     }
-    return 0;
+    printf("Calling jumpfunc2\n");
+    jumpfunc2();
 }
 
-void func1(jmp_buf buf) {
-    printf("Inside the user defined function 1\n");
-    longjmp(buf, 1);
-}
-
-void func2(jmp_buf buf) {
-    printf("Inside the user defined function 2\n");
-    longjmp(buf, 2);
+int main(){
+    int val;
+    printf("In main\n");
+    val=setjmp(buf1);
+    if(val==1){
+        printf("Return from jumpfunc1 to main\n");
+        exit(0);
+    }
+    printf("Calling jumpfunc1\n");
+    jumpfunc1();
 }
