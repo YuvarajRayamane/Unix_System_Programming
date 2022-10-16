@@ -1,29 +1,30 @@
-#include <stdio.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<sys/wait.h>
 #include <unistd.h>
-#include <sys/wait.h>
-#include <stdlib.h>
 
-int main()
-{
-    if (fork() == 0){
-        pid_t process_id = getpid();
-        pid_t parent_id = getppid();
-        char command[1000];
-
-        printf("Hello from the child process\n");
-        printf("Child process ID: %d\n", process_id);
-        printf("Parent process ID: %d\n", parent_id);
-
-        printf("Enter a command: ");
-        scanf("%[^\n]s", command);
-
-        printf("Executing the command: \n\n");
-        system(command);
-        printf("\n");
-    } else {
-        pid_t child_id = wait(NULL);
-        printf("Hello from the parent process\n");
-        printf("Parent process ID: %d\n", getpid());
-        printf("Child process ID was: %d\n", child_id);
-    }
+int main(){
+printf("Parent Process is Forking\n");
+pid_t rv=fork();
+if(rv==-1){
+printf("Fork Failed\n");
+}
+else if(rv==0){
+printf("The Child Process is executing\n");
+   	char cmd[1000];
+   	printf("Enter the command to be executed\n");
+   	scanf("%[^\n]s",cmd);
+   	printf("The output is \n");
+   	system(cmd);
+printf("The child proceess id is %d\n",getpid());
+printf("The parent process id is %d\n",getppid());
+exit(0);
+}
+else if(rv>0){
+printf("The Parent Process is waiting\n");
+wait(NULL);
+printf("The Parent Process is executing\n");
+printf("The child process id is %d\n",rv);
+printf("The parent process id is %d\n",getpid());
+}
 }
